@@ -194,30 +194,39 @@ lept_type lept_get_type(const lept_value* v)
     return v->type;
 }
 
-int lept_get_boolean(const lept_value* v) {
-	/* \TODO */
-	return 0;
+int lept_get_boolean(const lept_value* v)
+{
+	assert(v != NULL && (v->type == LEPT_TRUE || v->type == LEPT_FALSE));
+	return v->type == LEPT_TRUE;
 }
 
-void lept_set_boolean(lept_value* v, int b) {
-	/* \TODO */
+void lept_set_boolean(lept_value* v, int b)
+{
+	lept_free(v);
+	v->type = b ? LEPT_TRUE : LEPT_FALSE;
 }
 
-double lept_get_number(const lept_value* v) {
+double lept_get_number(const lept_value* v)
+{
 	assert(v != NULL && v->type == LEPT_NUMBER);
 	return v->u.n;
 }
 
-void lept_set_number(lept_value* v, double n) {
-	/* \TODO */
+void lept_set_number(lept_value* v, double n)
+{
+	lept_free(v);
+	v->u.n = n;
+	v->type = LEPT_NUMBER;
 }
 
-const char* lept_get_string(const lept_value* v) {
+const char* lept_get_string(const lept_value* v)
+{
 	assert(v != NULL && v->type == LEPT_STRING);
 	return v->u.s.s;
 }
 
-size_t lept_get_string_length(const lept_value* v) {
+size_t lept_get_string_length(const lept_value* v)
+{
 	assert(v != NULL && v->type == LEPT_STRING);
 	return v->u.s.len;
 }

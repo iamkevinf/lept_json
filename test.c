@@ -20,6 +20,8 @@ static int s_test_pass = 0;
         }                                                       \
     } while(0)                                                  \
 
+#define EXPECT_EQ_TRUE(actual) EXPECT_EQ_BASE((actual) != 0, "true", "false", "%s")
+#define EXPECT_EQ_FALSE(actual) EXPECT_EQ_BASE((actual) == 0, "false", "true", "%s")
 #define EXPECT_EQ_INT(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%d")
 #define EXPECT_EQ_DOUBLE(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%.17g")
 #define EXPECT_EQ_STRING(expect, actual, alength) EXPECT_EQ_BASE(sizeof(expect) - 1 == alength && memcmp(expect, actual, alength) == 0, expect, actual, "%s")
@@ -198,13 +200,23 @@ static void test_access_null()
 
 static void test_access_boolean()
 {
-	/* \TODO */
-	/* Use EXPECT_TRUE() and EXPECT_FALSE() */
+	lept_value v;
+	lept_init(&v);
+	lept_set_boolean(&v, 1);
+	EXPECT_EQ_TRUE(lept_get_boolean(&v));
+
+	lept_set_boolean(&v, 0);
+	EXPECT_EQ_FALSE(lept_get_boolean(&v));
+	lept_free(&v);
 }
 
 static void test_access_number()
 {
-	/* \TODO */
+	lept_value v;
+	lept_init(&v);
+	lept_set_number(&v, 11.23);
+	EXPECT_EQ_DOUBLE(11.23, lept_get_number(&v));
+	lept_free(&v);
 }
 
 static void test_access_string()
